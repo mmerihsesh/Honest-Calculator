@@ -18,48 +18,9 @@ OPERATOR_DICT = {
     '*': mul,
     '/': truediv
 }
-
-
-def is_one_digit(input_string: str) -> bool:
-    try:
-        input_string = str(abs(int(input_string)))
-    except (TypeError, ValueError):
-        return False
-
-    return len(input_string) == 1 and input_string.isnumeric():
-
-
-def is_user_lazy(first_number: str, second_number: str, oper: str):
-    msg = ''
-    if all(map(is_one_digit, (first_number, second_number))):
-        msg += MSG_7
-    if 1 in {first_number, second_number} and oper == '*':
-        msg += MSG_8
-    if not all((first_number, second_number)) and oper in {'*', '+', '-'}:
-        msg += MSG_9
-    if msg:
-        print(f'{MSG_6}{msg}')
-
-
-def get_boolean_answer(msg: str) -> bool:
-    while answer not in {'y', 'n'}:
-        print(msg)
-        answer = input()
-
-    return answer == 'y'
-
-
-def process_input(input_string: str, default_value: Union[float, int]) -> Union[float, int]:
-    if input_string == 'M':
-        return default_value
-
-    if input_string.isnumeric():
-        return int(input_string)
-
-    return float(input_string)
  
 
-def test_func():
+def main():
     memory = 0
 
     while True:
@@ -67,6 +28,7 @@ def test_func():
 
         try:
             x, oper, y = input().split()
+            x, y = [process_input(input_val, memory) for input_val in (x, y)]
         except (TypeError, ValueError):
             print(MSG_1)
             continue
@@ -75,7 +37,6 @@ def test_func():
             print(MSG_2)
             continue
 
-        x, y = [process_input(input_val, memory) for input_val in (x, y)]
         is_user_lazy(x, y, oper)
 
         if not y:
@@ -92,5 +53,44 @@ def test_func():
             break
 
 
+def process_input(input_string: str, default_value: Union[float, int]) -> Union[float, int]:
+    if input_string == 'M':
+        return default_value
+
+    if input_string.isnumeric():
+        return int(input_string)
+
+    return float(input_string)
+
+
+def is_user_lazy(first_number: str, second_number: str, oper: str):
+    msg = ''
+    if all(map(is_one_digit, (first_number, second_number))):
+        msg += MSG_7
+    if 1 in {first_number, second_number} and oper == '*':
+        msg += MSG_8
+    if not all((first_number, second_number)) and oper in {'*', '+', '-'}:
+        msg += MSG_9
+    if msg:
+        print(f'{MSG_6}{msg}')
+
+
+def is_one_digit(input_string: str) -> bool:
+    try:
+        input_string = str(abs(int(input_string)))
+    except (TypeError, ValueError):
+        return False
+
+    return len(input_string) == 1 and input_string.isnumeric():
+
+
+def get_boolean_answer(msg: str) -> bool:
+    while answer not in {'y', 'n'}:
+        print(msg)
+        answer = input()
+
+    return answer == 'y'
+
+
 if __name__ == '__main__':
-    test_func()
+    main()
