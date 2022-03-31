@@ -1,108 +1,95 @@
-msg_0 = "Enter an equation"
-msg_1 = "Do you even know what numbers are? Stay focused!"
-msg_2 = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
-msg_3 = "Yeah... division by zero. Smart move..."
-msg_4 = "Do you want to store the result? (y / n):"
-msg_5 = "Do you want to continue calculations? (y / n):"
-msg_6 = " ... lazy"
-msg_7 = " ... very lazy"
-msg_8 = " ... very, very lazy"
-msg_9 = "You are"
-result = 'not set'
+from operator import add, mul, sub, truediv
+from typing import Union
+
+MSG_0 = "Enter an equation"
+MSG_1 = "Do you even know what numbers are? Stay focused!"
+MSG_2 = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
+MSG_3 = "Yeah... division by zero. Smart move..."
+MSG_4 = "Do you want to store the result? (y / n):"
+MSG_5 = "Do you want to continue calculations? (y / n):"
+MSG_6 = " ... lazy"
+MSG_7 = " ... very lazy"
+MSG_8 = " ... very, very lazy"
+MSG_9 = "You are"
+
+OPERATOR_DICT = {
+    '+': add,
+    '-': sub,
+    '*': mul,
+    '/': truediv
+}
 
 
-def is_one_digit(v):
+def is_one_digit(input_string: str) -> bool:
     try:
-        int(v)
-        v = str(v)
-        if len(v) == 1 and v.isnumeric():
-            output = True
-        else:
-            output = False
-    except:
-        output = False
-    return output #  из функции ожидается вывод где-то далее
+        str(abs(int(input_string)))
+    except (TypeError, ValueError):
+        return False
+
+    return len(input_string) == 1 and input_string.isnumeric():
 
 
-def check_lazy(v1, v2, v3):
+def is_user_lazy(first_number: str, second_number: str, oper: str):
     msg = ''
-    if is_one_digit(v1) and is_one_digit(v2):
-        msg = msg + msg_6
-    if (v1 == 1 or v2 == 1) and v3 == '*':
-        msg = msg + msg_7
-    if (v1 == 0 or v2 == 0) and (v3 == '*' or v3 == '+' or v3 == '-'):
-        msg = msg + msg_8
-    if msg != '':
-        msg = msg_9 + msg
+    if all(map(is_one_digit, (first_number, second_number))):
+        msg += MSG_6
+    if 1 in {first_number, second_number} and oper == '*':
+        msg += MSG_7
+    if not all((first_number, second_number)) and oper in {'*', '+', '-'}:
+        msg += MSG_8
+    if msg:
+        print(f'{MSG_9}{msg}')
+
+
+def get_boolean_answer(msg: str) -> bool:
+    while answer not in {'y', 'n'}:
         print(msg)
-
-
-def last_func():
-    while True:
-        print(msg_5)
         answer = input()
-        if answer == 'y':
-            return
-        elif answer == 'n':
-            return answer
 
+    return answer == 'y'
+
+
+def process_input(input_string: str, default_value: Union[float, int]) -> Union[float, int]:
+    if input_string == 'M':
+        return default_value
+    if input_string.isnumeric():
+        return int(input_string)
+
+    return float(input_string)
+ 
 
 def test_func():
     memory = 0
+
     while True:
-        print(msg_0)
+        print(MSG_0)
+
         try:
             x, oper, y = input().split()
-            if x != 'M':
-                if x.isnumeric() == True: # тут убрать проверку 
-                    x = int(x)
-                else:
-                    x = float(x)
-            else:
-                x = memory
-            if y != 'M':
-                if y.isnumeric() == True: # тут убрать проверку 
-                    y = int(y)
-                else:
-                    y = float(y)
-            else:
-                y = memory
         except (TypeError, ValueError):
-            print(msg_1)
-        else:
-            if oper in {'+', '-', '/', '*'}:
-                v1, v2, v3 = x, y, oper
-                check_lazy(v1, v2, v3)
-                if oper == '+':
-                    result = x + y
-                elif oper == '-':
-                    result = x - y
-                elif oper == '*':
-                    result = x * y
-                elif oper == '/' and y != 0:
-                    result = x / y
-                else:
-                    print(msg_3)
-                    continue
-                if result != 'not set':
-                    print(float(result))
-                    while True:
-                        print(msg_4)
-                        answer = input()
-                        if answer == 'y':
-                            memory = result
-                            answer = last_func()
-                            break
-                        elif answer == 'n':
-                            answer = last_func()
-                            break
-                        break
-                    if answer == 'n':
-                        break
-                    continue
-            print(msg_2)
+            print(MSG_1)
+            continue
+
+        if oper not in {'+', '-', '/', '*'}:
+            print(MSG_2)
+            continue
+
+        x, y = [process_input(input_val, memory) for input_val in (x, y)]
+        is_user_lazy(x, y, oper)
+
+        if not y:
+            print(MSG_3)
+            continue
+
+        result = OPERATOR_DICT[oper](x, y)
+        print(float(result))
+
+        if get_boolean_answer(MSG_4):
+            memory = result
+
+        if not get_boolean_answer(MSG_5)
+            break
 
 
-test_func()
-
-
+if __name__ == '__main__':
+    test_func()
