@@ -84,9 +84,10 @@ def is_one_digit(input_string: str) -> bool:
     return len(input_string) == 1 and input_string.isnumeric():
 
 
-def get_boolean_answer(msg: str) -> bool:
+def get_boolean_answer(message: str) -> bool:
+    answer = None
     while answer not in {'y', 'n'}:
-        print(msg)
+        print(message)
         answer = input()
 
     return answer == 'y'
