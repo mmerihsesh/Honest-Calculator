@@ -1,7 +1,7 @@
 from operator import add, mul, sub, truediv
 from typing import Union
 
-MSG_0 = "Enter an equation"
+MSG_0 = "Enter an expression"
 MSG_1 = "Do you even know what numbers are? Stay focused!"
 MSG_2 = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
 MSG_3 = "Yeah... division by zero. Smart move..."
