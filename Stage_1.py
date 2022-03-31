@@ -33,13 +33,13 @@ def main():
             print(MSG_1)
             continue
 
-        if oper not in {'+', '-', '/', '*'}:
+        if oper not in OPERATOR_DICT:
             print(MSG_2)
             continue
 
         is_user_lazy(x, y, oper)
 
-        if not y:
+        if oper == '/' and not y:
             print(MSG_3)
             continue
 
@@ -69,7 +69,7 @@ def is_user_lazy(first_number: str, second_number: str, oper: str):
         msg += MSG_7
     if 1 in {first_number, second_number} and oper == '*':
         msg += MSG_8
-    if not all((first_number, second_number)) and oper in {'*', '+', '-'}:
+    if not all((first_number, second_number)) and oper != '/':
         msg += MSG_9
     if msg:
         print(f'{MSG_6}{msg}')
