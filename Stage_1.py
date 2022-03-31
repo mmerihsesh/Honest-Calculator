@@ -21,8 +21,7 @@ def is_one_digit(v):
             output = False
     except:
         output = False
-    return output
-    #  из функции ожидается вывод где-то далее
+    return output #  из функции ожидается вывод где-то далее
 
 
 def check_lazy(v1, v2, v3):
@@ -55,14 +54,14 @@ def test_func():
         try:
             x, oper, y = input().split()
             if x != 'M':
-                if x.isnumeric() == True:
+                if x.isnumeric() == True: # тут убрать проверку 
                     x = int(x)
                 else:
                     x = float(x)
             else:
                 x = memory
             if y != 'M':
-                if y.isnumeric() == True:
+                if y.isnumeric() == True: # тут убрать проверку 
                     y = int(y)
                 else:
                     y = float(y)
