@@ -7,10 +7,10 @@ MSG_2 = "Yes ... an interesting math operation. You've slept through all classes
 MSG_3 = "Yeah... division by zero. Smart move..."
 MSG_4 = "Do you want to store the result? (y / n):"
 MSG_5 = "Do you want to continue calculations? (y / n):"
-MSG_6 = " ... lazy"
-MSG_7 = " ... very lazy"
-MSG_8 = " ... very, very lazy"
-MSG_9 = "You are"
+MSG_6 = "You are"
+MSG_7 = " ... lazy"
+MSG_8 = " ... very lazy"
+MSG_9 = " ... very, very lazy"
 
 OPERATOR_DICT = {
     '+': add,
@@ -22,7 +22,7 @@ OPERATOR_DICT = {
 
 def is_one_digit(input_string: str) -> bool:
     try:
-        str(abs(int(input_string)))
+        input_string = str(abs(int(input_string)))
     except (TypeError, ValueError):
         return False
 
@@ -32,13 +32,13 @@ def is_one_digit(input_string: str) -> bool:
 def is_user_lazy(first_number: str, second_number: str, oper: str):
     msg = ''
     if all(map(is_one_digit, (first_number, second_number))):
-        msg += MSG_6
-    if 1 in {first_number, second_number} and oper == '*':
         msg += MSG_7
-    if not all((first_number, second_number)) and oper in {'*', '+', '-'}:
+    if 1 in {first_number, second_number} and oper == '*':
         msg += MSG_8
+    if not all((first_number, second_number)) and oper in {'*', '+', '-'}:
+        msg += MSG_9
     if msg:
-        print(f'{MSG_9}{msg}')
+        print(f'{MSG_6}{msg}')
 
 
 def get_boolean_answer(msg: str) -> bool:
@@ -52,6 +52,7 @@ def get_boolean_answer(msg: str) -> bool:
 def process_input(input_string: str, default_value: Union[float, int]) -> Union[float, int]:
     if input_string == 'M':
         return default_value
+
     if input_string.isnumeric():
         return int(input_string)
 
